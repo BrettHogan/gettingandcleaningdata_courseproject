@@ -1,2 +1,0 @@
-gettingandcleaningdata_courseproject
-====================================
