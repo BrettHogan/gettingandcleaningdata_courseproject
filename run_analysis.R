@@ -1,4 +1,11 @@
-# add comments here
+# This function loads data extracted data for the getting and cleaning data course from  
+#
+# https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+#
+#It adds columnes for the participant and the activity and them parses the datset into just the means and
+# and standard deviations of the features.  Then this function takes the mean of these features for each activity 
+# each participant and returns a data.table
+
 
 run_analysis<-function()
 {
@@ -55,27 +62,25 @@ run_analysis<-function()
   
   totaldata<-rbind(mytest,mytrain)
   
-  totaldata
+  cleanfeatures<-gsub("-",".",myfeatures,fixed = TRUE)
+  cleanfeatures<-sub("()","",cleanfeatures,fixed = TRUE)
+  cleanfeatures<-tolower(cleanfeatures)
+  totalfeatures<-c(cleanfeatures,"testsubject","activity")
+  newnames<-cleanfeatures
+  setnames(totaldata,colnames(totaldata),totalfeatures)
+ 
+  setkey(totaldata,testsubject,activity)
   
-#   cleanfeatures<-gsub("-",".",myfeatures,fixed = TRUE)
-#   cleanfeatures<-sub("()","",cleanfeatures,fixed = TRUE)
-#   cleanfeatures<-tolower(cleanfeatures)
-#   totalfeatures<-c(cleanfeatures,"testsubject","activity")
-#   newnames<-cleanfeatures
-#   setnames(totaldata,colnames(totaldata),totalfeatures)
-#  
-#   setkey(totaldata,testsubject,activity)
-#   
-#   output<-totaldata[,lapply(.SD,mean) , by = "testsubject,activity", .SDcols = cleanfeatures]
-#   
-#   for(i in seq_along(cleanfeatures))
-#   {
-#     newnames[i]<-as.character(paste(cleanfeatures[i],".mean",sep = ""))
-#   }
-#   newnames<-c("testsubject","activity",newnames)
-#   setnames(output,colnames(output),newnames)
-#   
-#   output
-# 
-#   
+  output<-totaldata[,lapply(.SD,mean) , by = "testsubject,activity", .SDcols = cleanfeatures]
+  
+  for(i in seq_along(cleanfeatures))
+  {
+    newnames[i]<-as.character(paste(cleanfeatures[i],".mean",sep = ""))
+  }
+  newnames<-c("testsubject","activity",newnames)
+  setnames(output,colnames(output),newnames)
+  
+  output
+
+  
 }
