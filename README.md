@@ -8,7 +8,7 @@ This Repo contains the following
 
 *run_analysis.R - contains the R script used to perform the Transformation.
 
-*mytidydata.md - The data set after the transfomations
+*mytidydata2.txt - The data set after the transfomations
 
 
 ##RAW DATA
